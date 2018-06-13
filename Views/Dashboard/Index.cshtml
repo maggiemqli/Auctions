@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@model Auctions.Models.DashboardView
+@using Auctions.Models;
+
+<div class="container">
+    <div class="row">
+        <nav >
+            <div class="col-sm-8">
+            <h1 class="text-left">Current Auctions</h1>  
+            <br>
+            </div>     
+            <div class="col-sm-3">      
+            <h5 class="text-right">Hi, @ViewBag.CurrentUser <a href="logout" style="margin-left: 3em;">Logout</a></h5></div> 
+            </div>    
+        </nav>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Seller</th>
+                    <th>Top Bid</th>
+                    <th>End Date</th>
+                    <th>Action</th>
+                    <th>Time Left</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(AuctionEvent a in Model.auctions)
+                {
+                    <tr>
+                        <td><a href="/show/@a.auction_id">@a.product_name</td>
+                        <td>@a.user.first_name</td>
+                        <td>@a.starting_bid</td>   
+                        <td>@a.end_date</td>
+                        @{
+                            if(a.user_id == Model.User.user_id)
+                            {
+                                <td><a href="/delete/@a.auction_id">Delete</a></td>
+                            }
+                        }
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="/create"><button>New Auction</button></a>
+        
+        <p class"text-right">Your Current Wallet : $ @ViewBag.CurrentBalance</p>
+    </div>
+</div>

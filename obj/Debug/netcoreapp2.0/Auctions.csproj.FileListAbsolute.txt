@@ -1,0 +1,11 @@
+/Users/maggieli/Desktop/Auctions/bin/Debug/netcoreapp2.0/Auctions.deps.json
+/Users/maggieli/Desktop/Auctions/bin/Debug/netcoreapp2.0/Auctions.runtimeconfig.json
+/Users/maggieli/Desktop/Auctions/bin/Debug/netcoreapp2.0/Auctions.runtimeconfig.dev.json
+/Users/maggieli/Desktop/Auctions/bin/Debug/netcoreapp2.0/Auctions.dll
+/Users/maggieli/Desktop/Auctions/bin/Debug/netcoreapp2.0/Auctions.pdb
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.csprojResolveAssemblyReference.cache
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.csproj.CoreCompileInputs.cache
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.AssemblyInfoInputs.cache
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.AssemblyInfo.cs
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.dll
+/Users/maggieli/Desktop/Auctions/obj/Debug/netcoreapp2.0/Auctions.pdb

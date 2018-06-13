@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model Auctions.Models.LoginViewModel
+
+<br>
+
+<form method="post" asp-controller="Home" asp-action="LoginUser">
+    <div class="form-group">
+        <label asp-for="LogUsername"></label>
+        <span asp-validation-for="LogUsername"></span>
+        <input class="form-control" asp-for="LogUsername" >
+    </div>
+    <div class="form-group">
+        <label asp-for="LogPassword"></label>
+        <span asp-validation-for="LogPassword"></span>
+        <input class="form-control" asp-for="LogPassword" >
+    </div>
+<input type="submit" value="Submit" class="btn btn-info" style="dislay: inline-block;">
+</form>
+        
