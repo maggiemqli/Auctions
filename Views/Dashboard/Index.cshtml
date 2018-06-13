@@ -31,7 +31,7 @@
                     <td><a href="/show/@a.auction_id">@a.product_name</td>
                     <td>@a.user.first_name</td>
                     <td>@a.starting_bid</td>   
-                    <td>@a.end_date</td>
+                    <td>@a.end_date.ToString("MM/dd/yyyy")</td>
                     @{
                         if(a.user_id == Model.User.user_id)
                         {
