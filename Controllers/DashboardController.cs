@@ -105,7 +105,9 @@ namespace Auctions.Controllers
                     end_date = model.end_date,
                     user_id = user.user_id
                 };
-
+                TimeSpan diff = DateTime.Now - newAuction.end_date;
+                double x = diff.TotalDays;
+                ViewBag.diff = x;
                 _dbContext.auctions.Add(newAuction);
                 _dbContext.SaveChanges();
                 HttpContext.Session.SetInt32("ItemId", newAuction.auction_id);

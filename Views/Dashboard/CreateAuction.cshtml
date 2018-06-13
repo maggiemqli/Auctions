@@ -2,11 +2,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="navbar-default">
-            <h1>New Auction</h1>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
+        <div class="nav">
+            <h1 class="col-sm-6">New Auction</h1>
+            <h1 class="col-sm-6 text-right" style="font-size: 13pt; vertical-align: bottom;">
+                <a href="/dashboard">Dashboard |</a>
+                <a href="/logout">  Logout</a>
+            </h1>
         </div>
+        <br>
         <form method="post" asp-controller="Dashboard" asp-action="CreateAuction">
             <div class="form-group">
                 <label asp-for="product_name"></label>

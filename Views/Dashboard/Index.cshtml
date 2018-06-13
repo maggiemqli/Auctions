@@ -6,15 +6,13 @@
 
 <div class="container">
     <div class="row">
-        <nav >
-            <div class="col-sm-8">
-            <h1 class="text-left">Current Auctions</h1>  
-            <br>
-            </div>     
-            <div class="col-sm-3">      
-            <h5 class="text-right">Hi, @ViewBag.CurrentUser <a href="logout" style="margin-left: 3em;">Logout</a></h5></div> 
-            </div>    
-        </nav>
+        <div class="nav">
+            <h1 class="col-sm-6">Current Auctions</h1>
+            <h1 class="col-sm-6 text-right" style="font-size: 13pt; vertical-align: bottom;">
+                <p>Hi, @ViewBag.CurrentUser | <a href="logout">Logout</a></p>
+            </h1>
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -27,22 +25,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(AuctionEvent a in Model.auctions)
-                {
-                    <tr>
-                        <td><a href="/show/@a.auction_id">@a.product_name</td>
-                        <td>@a.user.first_name</td>
-                        <td>@a.starting_bid</td>   
-                        <td>@a.end_date</td>
-                        @{
-                            if(a.user_id == Model.User.user_id)
-                            {
-                                <td><a href="/delete/@a.auction_id">Delete</a></td>
-                            }
+            @foreach(AuctionEvent a in Model.auctions)
+            { 
+                <tr>
+                    <td><a href="/show/@a.auction_id">@a.product_name</td>
+                    <td>@a.user.first_name</td>
+                    <td>@a.starting_bid</td>   
+                    <td>@a.end_date</td>
+                    @{
+                        if(a.user_id == Model.User.user_id)
+                        {
+                            <td><a href="/delete/@a.auction_id">Delete</a></td>
                         }
-                        
-                    </tr>
-                }
+                    }
+                    <td>@ViewBag.diff days</td>
+                </tr>
+            }
             </tbody>
         </table>
         <a href="/create"><button>New Auction</button></a>

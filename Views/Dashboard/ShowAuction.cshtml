@@ -6,36 +6,28 @@
 
 <div class="container">
     <div class="row">
-        <div class="navbar-default">
-            <h1>@Model.product_name</h1>
-            <h3>Created by: @Model.user.first_name</h3>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/home/logout">Logout</a>
+        <div class="nav">
+            <h1 class="col-sm-6">@Model.product_name 
+                <span style="font-size: 16pt; margin-left: 20px;">
+                    Created by: @Model.user.first_name
+                </span>
+            </h1>
+            <h1 class="col-sm-6 text-right" style="font-size: 13pt; vertical-align: bottom;">
+                <a href="/dashboard">Dashboard | </a><a href="/home/logout">Logout</a>
+            </h1>
         </div>
+        <hr>
         <div class="col-sm-8">
-            <h3>Time Remaining : </h3>
-            <br>
-            <p>Description : @Model.description</p>
+            <h4>Time Remaining : @ViewBag.diff</h4>
+            <hr>
+            <h4>Description :</h4>  
+            <p>@Model.description</p>
             <hr>
             <h3>Current Highest Bid: @Model.starting_bid</h3>
             <p>By </p>
             <hr>
             <h3>Your Bid</h3>
             @Html.Partial("./Partials/CreateBid", Model.bid)
-            <form method="post" asp-action="CreateBid" asp-controller="Dashboard" class="six colums">
-                @{
-                    if(TempData["Error"] != null)
-                    {
-                        <p>@TempData["Error"]</p>
-                    }
-                }
-                <div class="form-group">
-                    <label for="amt">Bid Amount :</label>
-                    @TempData["Error"]
-                    <input class="form-control" type="number" id="amt" name="amt">
-                </div>
-                <input type="submit" value="Bid" class="btn btn-info">
-            </form>
         </div>
     </div>
 </div>
