@@ -54,10 +54,7 @@ namespace Auctions.Controllers
         public IActionResult ShowAuction(int id)
         {
             User user = _dbContext.users.Where(n => n.user_id == HttpContext.Session.GetInt32("UserId")).SingleOrDefault();
-            // if(user == null)
-            // {
-            //     return RedirectToAction("Index","Home");
-            // }
+
             AuctionEvent auctionInfo = _dbContext.auctions
                                     .Where(a => a.auction_id == id)
                                     .Include(a => a.user)
@@ -134,7 +131,6 @@ namespace Auctions.Controllers
         {
             User user = _dbContext.users.Where(u=>u.user_id == HttpContext.Session.GetInt32("UserId")).SingleOrDefault();
             AuctionEvent auc = _dbContext.auctions.Where(a => a.auction_id == HttpContext.Session.GetInt32("ItemId")).SingleOrDefault();
-            // AuctionEvent auction = _dbContext.auctions.Where(a => a.auction_id == HttpContext.Session.GetInt32("ItemId")).SingleOrDefault();
             
             if(user == null)
             {
@@ -166,11 +162,8 @@ namespace Auctions.Controllers
                 }
                 return Redirect("dashboard");
             }
-            // return Redirect("show/" + auc.auction_id);
             return View("ShowAuction");
         }
-
-
 
         public IActionResult LogOut()
         {

@@ -45,9 +45,7 @@ namespace Auctions.Controllers
                     wallet_balance = 1000                        
                 };
                 User theUser = _dbContext.Add(newUser).Entity;
-                // _dbContext.users.Add(newUser);
                 _dbContext.SaveChanges();
-                // int UserId = _dbContext.users.Last().user_id;
                 HttpContext.Session.SetInt32("UserId", theUser.user_id);
                 return RedirectToAction("Index", "Dashboard");
             }

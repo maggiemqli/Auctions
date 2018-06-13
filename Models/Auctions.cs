@@ -15,9 +15,6 @@ namespace Auctions.Models
         public float starting_bid {get;set;}
         public DateTime end_date { get; set; }
 
-        // public float bid_amount {get;set;}
-        // public int bidder_id {get;set;}
-
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
 
