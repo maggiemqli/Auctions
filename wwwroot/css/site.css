@@ -38,9 +38,6 @@
     /* font-size: 14pt; */
     float: right;
 }
-.adjust-col {
-    column-width: 100px;
-}
 
 .CreateAuction {
     margin-top: 100px;

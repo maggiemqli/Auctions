@@ -8,8 +8,8 @@
     <div class="row">
         <div class="nav">
             <h1 class="col-sm-6">@Model.product_name 
-                <span class="nav-creator" > Created by : @Model.user.first_name</span></h1>
-            <h1 class="col-sm-6 text-right nav-link" >
+                <span class="nav-creator" style="font-size: 14pt;margin-left: 40px;"> Created by : @Model.user.first_name</span></h1>
+            <h1 class="col-sm-6 text-right" style="font-size: 13pt; vertical-align: bottom;">
                 <a href="/dashboard">Dashboard | </a> 
                 <a href="/logout">Logout</a>
             </h1>
@@ -19,23 +19,25 @@
             @{
                 if( ((@Model.end_date - DateTime.Now).Days) < 1)
                 {
-                    <h4>Time Remaining : &nbsp;  <span class="font-light"> @((@Model.end_date - DateTime.Now).Hours + 24) hours </span></h4>
+                    <h4>Time Remaining : &nbsp;  <span class="font-light" style="font-weight: 300;font-size: 12pt;text-align: justify;"> 
+                    @((@Model.end_date - DateTime.Now).Hours + 24) hours </span></h4>
                 }else{
-                    <h4>Time Remaining : &nbsp;  <span class="font-light"> @((@Model.end_date - DateTime.Now).Days + 1) days </span></h4>
+                    <h4>Time Remaining : &nbsp;  <span class="font-light" style="font-weight: 300;font-size: 12pt;text-align: justify;"> 
+                    @((@Model.end_date - DateTime.Now).Days + 1) days </span></h4>
                 }
             }
             <br>
-            <h4>Description : &nbsp; <span class="font-light">@Model.description</span></h4>  
+            <h4>Description : &nbsp; <span style="font-weight: 300;font-size: 12pt;text-align: justify;">@Model.description</span></h4>  
             <hr>
-            <div class="col-sm-4 bid-left">
+            <div class="col-sm-4 bid-left" style="margin-left: -13px;margin-right: 20px;">
                 <h4>Current Highest Bid : </h4>
-                <h3 class="highestbid">$ @Model.highest_bid</h3>
+                <h3 class="highestbid" style="margin-top: 30px;margin-left: 53px;margin-bottom: 30px;">$ @Model.highest_bid</h3>
                 @{
                     if(@Model.starting_bid == @Model.highest_bid)
                     {
                         <p>No new bidder yet. The current highest bid is the starting bid.</p>
                     }else{
-                        <p class="bidder">- By @ViewBag.bidInfo</p>
+                        <p class="bidder" style="margin-left: 3em;">- By @ViewBag.bidInfo</p>
                     }
                 }
             </div>
@@ -45,7 +47,7 @@
                     @{
                         if (TempData["Error"] != null)
                         {
-                            <ul class="tempdata">
+                            <ul class="tempdata" style="color: red;">
                                 <li>@TempData["Error"]</li>
                             </ul>
                         }
