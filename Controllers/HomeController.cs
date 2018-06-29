@@ -75,20 +75,6 @@ namespace Auctions.Controllers
             return View("Index");
         }
 
-
-        [HttpGet("success")]
-        public IActionResult Success()
-        {
-            return View("Success");
-        } 
-
-        [HttpGet("logout")]
-        public IActionResult LogOut()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index");
-        }
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

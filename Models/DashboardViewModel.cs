@@ -8,10 +8,7 @@ namespace Auctions.Models
      public class DashboardView
     {
         public List<AuctionEvent> auctions {get;set;}
-        public AuctionEvent auctionevent {get;set;}
         public User User {get;set;}
-        public List<Bid> bid {get;set;}
-
     }
 
     public class AuctionView
@@ -32,23 +29,5 @@ namespace Auctions.Models
         [Display(Name="End Date")]
         [DataType(DataType.Date)]
         public DateTime end_date { get; set; }
-        
-        public float bid_amount {get;set;}
-    }
-
-    public class BidView
-    {
-        [Display(Name="Bid Amount")]
-        [Required]
-        public float bid_amount {get;set;}
-    }
-
-    public class FutureDate : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            DateTime date = (DateTime)value;
-            return date < DateTime.Now ? new ValidationResult("Date must be in future.") : ValidationResult.Success;
-        }
     }
 }

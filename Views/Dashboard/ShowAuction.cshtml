@@ -8,26 +8,54 @@
     <div class="row">
         <div class="nav">
             <h1 class="col-sm-6">@Model.product_name 
-                <span style="font-size: 16pt; margin-left: 20px;">
-                    Created by: @Model.user.first_name
-                </span>
-            </h1>
-            <h1 class="col-sm-6 text-right" style="font-size: 13pt; vertical-align: bottom;">
-                <a href="/dashboard">Dashboard | </a><a href="/home/logout">Logout</a>
+                <span class="nav-creator" > Created by : @Model.user.first_name</span></h1>
+            <h1 class="col-sm-6 text-right nav-link" >
+                <a href="/dashboard">Dashboard | </a> 
+                <a href="/logout">Logout</a>
             </h1>
         </div>
-        <hr>
-        <div class="col-sm-8">
-            <h4>Time Remaining : @ViewBag.diff</h4>
+        <br>
+        <div class="col-sm-9">
+            @{
+                if( ((@Model.end_date - DateTime.Now).Days) < 1)
+                {
+                    <h4>Time Remaining : &nbsp;  <span class="font-light"> @((@Model.end_date - DateTime.Now).Hours + 24) hours </span></h4>
+                }else{
+                    <h4>Time Remaining : &nbsp;  <span class="font-light"> @((@Model.end_date - DateTime.Now).Days + 1) days </span></h4>
+                }
+            }
+            <br>
+            <h4>Description : &nbsp; <span class="font-light">@Model.description</span></h4>  
             <hr>
-            <h4>Description :</h4>  
-            <p>@Model.description</p>
-            <hr>
-            <h3>Current Highest Bid: @Model.starting_bid</h3>
-            <p>By </p>
-            <hr>
-            <h3>Your Bid</h3>
-            @Html.Partial("./Partials/CreateBid", Model.bid)
+            <div class="col-sm-4 bid-left">
+                <h4>Current Highest Bid : </h4>
+                <h3 class="highestbid">$ @Model.highest_bid</h3>
+                @{
+                    if(@Model.starting_bid == @Model.highest_bid)
+                    {
+                        <p>No new bidder yet. The current highest bid is the starting bid.</p>
+                    }else{
+                        <p class="bidder">- By @ViewBag.bidInfo</p>
+                    }
+                }
+            </div>
+            <div class="col-sm-7">
+                <h4>Your Bid </h4>
+                <form method="post" asp-action="ProcessBid" asp-controller="Dashboard">
+                    @{
+                        if (TempData["Error"] != null)
+                        {
+                            <ul class="tempdata">
+                                <li>@TempData["Error"]</li>
+                            </ul>
+                        }
+                    }
+                    <div class="form-group col-md-6">
+                        <input class="form-control" type="number" id="amt" name="amt"> 
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-info col-md-2" style="display: inline-block; margin-left: 20px;">
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -23,6 +23,7 @@ namespace Auctions.Controllers
             _dbContext = context;
         }
 
+        // GET : Dashboard
         [HttpGet]
         [Route("dashboard")]
         public IActionResult Index()
@@ -32,38 +33,93 @@ namespace Auctions.Controllers
                 return RedirectToAction("Index", "Home");
             }
             User user = _dbContext.users.Where(n => n.user_id == HttpContext.Session.GetInt32("UserId")).SingleOrDefault();
+
             DashboardView newDashboard = new DashboardView
             {
-                auctions = _dbContext.auctions.OrderByDescending(a => a.starting_bid)
+                auctions = _dbContext.auctions.OrderByDescending(a => a.highest_bid)
                             .Include(a => a.user).ToList(),
                 User = user,
             };
-            foreach (AuctionEvent Allevent in _dbContext.auctions)
-            {
-                DateTime EndDate = Allevent.end_date;
-                DateTime StartDate = DateTime.Now;
-                TimeSpan span = EndDate - StartDate;
-            }
+
             ViewBag.CurrentUser = user.first_name;
             ViewBag.CurrentBalance = user.wallet_balance;
+
             return View(newDashboard);
         }
 
+        // GET : Show Auction
         [HttpGet]
-        [Route("/show/{id}")]
-        public IActionResult ShowAuction(int id)
+        [Route("/show/{itemid}/{userid}")]
+        public IActionResult ShowAuction(int itemid, int userid)
         {
-            User user = _dbContext.users.Where(n => n.user_id == HttpContext.Session.GetInt32("UserId")).SingleOrDefault();
-
+            if(ActiveUser == null)
+            { 
+                return RedirectToAction("Index", "Home");
+            }
             AuctionEvent auctionInfo = _dbContext.auctions
-                                    .Where(a => a.auction_id == id)
+                                    .Where(a => a.auction_id == itemid)
                                     .Include(a => a.user)
-                                    .Include(a => a.bid).ThenInclude(b => b.bidder)
-                                    .SingleOrDefault();
+                                    .Include(a => a.bid).SingleOrDefault();
+            Bid bidInfo = _dbContext.bids
+                        .Where(b => b.auction_id == auctionInfo.auction_id)
+                        .Include(b => b.bidder).LastOrDefault();
+            if(bidInfo != null)
+            {
+                ViewBag.bidInfo = bidInfo.bidder.first_name;
+            }
             HttpContext.Session.SetInt32("ItemId", auctionInfo.auction_id);                       
             return View(auctionInfo);
         }
 
+        // POST : Create Bid 
+        [HttpPost("/processbid/{itemid}/{userid}")]
+        public IActionResult ProcessBid(float amt, int itemid, int userid)
+        {
+            if(ActiveUser == null)
+            { 
+                return RedirectToAction("Index", "Home");
+            }
+            User user = ActiveUser;
+            AuctionEvent auctionInfo = _dbContext.auctions
+                                    .Where(a => a.auction_id ==  HttpContext.Session
+                                    .GetInt32("ItemId")).SingleOrDefault();
+            if(amt == 0)
+            {
+                TempData["Error"] = "Please specify the amount.";
+                return RedirectToAction("ShowAuction");
+            }
+            else if(amt <= auctionInfo.highest_bid)
+            {
+                TempData["Error"] = "Your bid MUST be greater than the highest bid.";
+                return RedirectToAction("ShowAuction");
+            }
+            else if(amt > user.wallet_balance)
+            {
+                TempData["Error"] = "You don't have enough balance for the bid.";
+                return RedirectToAction("ShowAuction");
+            }
+            else
+            {
+                auctionInfo.highest_bid = amt;
+                Bid newBid = new Bid
+                {
+                    bidder = user,
+                    auctions = auctionInfo,
+                };
+                if(_dbContext.bids.Where(b => b.auction_id == auctionInfo.auction_id) == null)
+                {
+                    Bid theBid = _dbContext.Add(newBid).Entity;
+                }
+                else{
+                    Bid theBid = _dbContext.Update(newBid).Entity;
+                }
+                user.wallet_balance -= amt;
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
+
+        // GET : Create Auction
         [HttpGet("/create")]
         public IActionResult CreateAuction(int id)
         {
@@ -74,6 +130,7 @@ namespace Auctions.Controllers
             return View();
         }
 
+        // POST : Create Auction
         [HttpPost("create")]
         public IActionResult CreateAuction(AuctionView model)
         {
@@ -81,6 +138,7 @@ namespace Auctions.Controllers
             {   
                 return RedirectToAction("Index", "Home"); 
             }
+            
             if(model.end_date == null)
             { 
                 ModelState.AddModelError("end_date", "End Date is required.");
@@ -103,11 +161,9 @@ namespace Auctions.Controllers
                     description = model.description,
                     starting_bid = model.starting_bid,
                     end_date = model.end_date,
-                    user_id = user.user_id
+                    user_id = user.user_id,
+                    highest_bid = model.starting_bid
                 };
-                TimeSpan diff = DateTime.Now - newAuction.end_date;
-                double x = diff.TotalDays;
-                ViewBag.diff = x;
                 _dbContext.auctions.Add(newAuction);
                 _dbContext.SaveChanges();
                 HttpContext.Session.SetInt32("ItemId", newAuction.auction_id);
@@ -116,57 +172,22 @@ namespace Auctions.Controllers
             return View("CreateAuction");
         }
 
+        // GET : Delete Auction
         [HttpGet("/delete/{id}")]
         public IActionResult DeleteAuction(int id)
         {
             if(ActiveUser == null)
+            {    
                 return RedirectToAction("Index", "Home");   
-            AuctionEvent toDelete = _dbContext.auctions.Where(a => a.auction_id == id).SingleOrDefault();
+            }
+            AuctionEvent toDelete = _dbContext.auctions.Where(a => a.auction_id == id).Include(a => a.bid).SingleOrDefault();
             _dbContext.auctions.Remove(toDelete);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");     
         }
 
-
-        [HttpPost("/process")]
-        public IActionResult CreateBid(Bid bid, int id)
-        {
-            User user = _dbContext.users.Where(u=>u.user_id == HttpContext.Session.GetInt32("UserId")).SingleOrDefault();
-            AuctionEvent auc = _dbContext.auctions.Where(a => a.auction_id == HttpContext.Session.GetInt32("ItemId")).SingleOrDefault();
-            
-            if(user == null)
-            {
-                return RedirectToAction("Index","Home");
-            }
-
-            if(ModelState.IsValid)
-            {
-                if(bid.bid_amount <= auc.starting_bid )
-                {
-                    ModelState.AddModelError("bid_amount", "Your bid must be greater than current highest bid.");
-                    // TempData["Error"] = "Bid must be higher than current highest bid.";
-                }
-                else if(bid.bid_amount < user.wallet_balance )
-                {
-                    ModelState.AddModelError("bid_amount", "Insufficient balance in wallet.");
-                    // TempData["Error"] = "Insufficient wallet balance.";
-                }else{
-                    Bid newBid = new Bid
-                    {
-                        bid_amount = bid.bid_amount,
-                        user_id= user.user_id,
-                        auction_id = auc.auction_id
-                    };
-                    auc.starting_bid = bid.bid_amount;
-                    user.wallet_balance -= bid.bid_amount;
-                    _dbContext.bids.Add(newBid);
-                    _dbContext.SaveChanges();
-                }
-                return Redirect("dashboard");
-            }
-            return View("ShowAuction");
-        }
-
+        // Logout 
+        [HttpGet("logout")]
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
@@ -177,6 +198,5 @@ namespace Auctions.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }

@@ -34,6 +34,43 @@
     }
 }
 
-span{
+.balance {
+    /* font-size: 14pt; */
+    float: right;
+}
+.adjust-col {
+    column-width: 100px;
+}
+
+.CreateAuction {
+    margin-top: 100px;
+    margin-left: 22em;
+}
+.nav-creator {
+    font-size: 14pt;
+    margin-left: 40px;
+}
+.nav-link {
+    font-size: 13pt; 
+    vertical-align: bottom;
+}
+.font-light {
+    font-weight: 300;
+    font-size: 12pt;
+    text-align: justify;
+}
+.bid-left {
+    margin-left: -13px;
+    margin-right: 20px;
+}
+.highestbid{
+    margin-top: 30px;
+    margin-left: 53px;
+    margin-bottom: 30px;
+}
+.bidder {
+    margin-left: 3em;
+}
+.tempdata {
     color: red;
 }

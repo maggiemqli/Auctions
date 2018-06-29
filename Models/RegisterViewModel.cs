@@ -4,7 +4,7 @@ namespace Auctions.Models
 {
     public class RegisterViewModel 
     {        
-        [Required]
+        [Required(ErrorMessage = "Username is required")]
         [Display(Name = "Username")]
         [RegularExpression(@"^[a-zA-Z]+$")]
         public string username{get;set;}

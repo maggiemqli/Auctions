@@ -2261,9 +2261,10 @@ th {
   text-align: left;
 }
 .table {
-  width: 100%;
+  width: 95%;
   max-width: 100%;
   margin-bottom: 20px;
+  margin-left: 25px;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -2630,6 +2631,9 @@ input[type="search"] {
 }
 .form-group {
   margin-bottom: 15px;
+}
+.form-group span {
+  color: red;
 }
 .radio,
 .checkbox {
