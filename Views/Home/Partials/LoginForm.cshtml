@@ -4,7 +4,6 @@
 @model Auctions.Models.LoginViewModel
 
 <br>
-
 <form method="post" asp-controller="Home" asp-action="LoginUser">
     <div class="form-group">
         <label asp-for="LogUsername"></label>
@@ -16,6 +15,7 @@
         <span class="alert-danger" asp-validation-for="LogPassword"></span>
         <input class="form-control" asp-for="LogPassword" >
     </div>
-<input type="submit" value="Submit" class="btn btn-info" style="dislay: inline-block;">
+    <input type="submit" value="Submit" class="btn btn-info" style="display: inline-block;">
 </form>
+
         

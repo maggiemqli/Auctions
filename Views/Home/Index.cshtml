@@ -1,14 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+
 <div class="container">
     <div class="row"> 
         <div class="col-sm-4">
             <h1>Login</h1> 
-            @Html.Partial("./Partials/LoginForm")
-        <hr>
-            <h1>Registration</h1>                  
-            @Html.Partial("./Partials/RegisterForm")
+            @Html.Partial("/Views/Home/Partials/LoginForm.cshtml")            
+            <hr>
+            <h1>Registration</h1>   
+            @Html.Partial("/Views/Home/Partials/RegisterForm.cshtml")
         </div>
     </div>
 </div>
